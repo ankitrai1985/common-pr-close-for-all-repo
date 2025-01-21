@@ -24,7 +24,7 @@ jobs:
       - name: Fetch repositories starting with ankit-
         id: fetch_repos
         run: |
-          repos=$(gh repo list your-org-name --limit 1000 --json name -q '.[].name' | grep '^digiacc-')
+          repos=$(gh repo list ankitrai1985 --limit 1000 --json name -q '.[].name' | grep '^digiacc-')
           echo "Repositories found: $repos"
           echo "::set-output name=repos::$repos"
         env:
