@@ -1,0 +1,1 @@
+# common-pr-close-for-all-repo
