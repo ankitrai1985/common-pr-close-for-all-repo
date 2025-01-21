@@ -1,0 +1,45 @@
+name: Close Stale Pull Requests for ankit-* Repos
+
+on:
+  workflow_dispatch:  # Allows manual trigger of this workflow
+    inputs:
+      dry-run:
+        type: boolean
+        required: true
+        default: true
+      days-before-stale:
+        type: number
+        required: true
+        default: 60
+      days-before-close:
+        type: number
+        required: true
+        default: 7
+
+jobs:
+  close-stale-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch repositories starting with ankit-
+        id: fetch_repos
+        run: |
+          repos=$(gh repo list your-org-name --limit 1000 --json name -q '.[].name' | grep '^digiacc-')
+          echo "Repositories found: $repos"
+          echo "::set-output name=repos::$repos"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Iterate over repositories and run Close Stale Pull Requests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          repos="${{ steps.fetch_repos.outputs.repos }}"
+          for repo in $repos; do
+            echo "Processing $repo..."
+            gh workflow run Close-Stale-Pull-Requests \
+              --repo your-org-name/$repo \
+              -f dry-run=${{ github.event.inputs.dry-run }} \
+              -f days-before-stale=${{ github.event.inputs.days-before-stale }} \
+              -f days-before-close=${{ github.event.inputs.days-before-close }}
+          done
