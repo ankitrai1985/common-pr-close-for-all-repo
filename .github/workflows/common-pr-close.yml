@@ -38,7 +38,7 @@ jobs:
           for repo in $repos; do
             echo "Processing $repo..."
             gh workflow run Close-Stale-Pull-Requests \
-              --repo your-org-name/$repo \
+              --repo ankitrai1985/$repo \
               -f dry-run=${{ github.event.inputs.dry-run }} \
               -f days-before-stale=${{ github.event.inputs.days-before-stale }} \
               -f days-before-close=${{ github.event.inputs.days-before-close }}
