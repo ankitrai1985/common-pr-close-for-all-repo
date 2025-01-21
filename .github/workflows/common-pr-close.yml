@@ -37,7 +37,7 @@ jobs:
           repos="${{ steps.fetch_repos.outputs.repos }}"
           for repo in $repos; do
             echo "Processing $repo..."
-            gh workflow run Close-Stale-Pull-Requests \
+            gh workflow run "Close-Stale-Pull-Requests" \
               --repo ankitrai1985/$repo \
               -f dry-run=${{ github.event.inputs.dry-run }} \
               -f days-before-stale=${{ github.event.inputs.days-before-stale }} \
